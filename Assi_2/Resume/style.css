@@ -1,0 +1,102 @@
+/* style.css */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+}
+
+header {
+    background: #1e3a8a;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.form-section,
+.preview-section {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+form input,
+form textarea,
+form button {
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+form button:hover {
+    background: #334cc3;
+}
+
+.resume-entry {
+    border-bottom: 1px dashed #ccc;
+    padding: 10px 0;
+    position: relative;
+}
+
+.resume-entry .edit-btn,
+.resume-entry .delete-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: #ef4444;
+    border: none;
+    color: white;
+    padding: 5px 8px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.resume-entry .edit-btn {
+    background: #3b82f6;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.preview-section {
+    background: #fff;
+    transition: all 0.5s ease-in-out;
+}
+
+#resumePreview {
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+.progress-bar {
+    height: 5px;
+    background: #22c55e;
+    width: 0;
+    transition: width 0.3s ease;
+}

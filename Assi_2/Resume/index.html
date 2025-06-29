@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Resume Builder</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="animations.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Interactive Resume Builder</h1>
+        <div class="progress-bar" id="progressBar"></div>
+    </header>
+
+    <main class="container">
+        <section class="form-section">
+            <form id="resumeForm">
+                <!-- Header Info -->
+                <input type="text" id="fullName" placeholder="Full Name" required />
+                <input type="text" id="address" placeholder="Address" required />
+                <input type="tel" id="phone" placeholder="Phone Number" required />
+                <input type="email" id="email" placeholder="Email" required />
+                <input type="url" id="linkedin" placeholder="LinkedIn URL" />
+                <input type="url" id="github" placeholder="GitHub URL" />
+
+                <!-- Education -->
+                <h3>Education</h3>
+                <div id="educationSection"></div>
+                <button type="button" onclick="addSection('education')">Add Education</button>
+
+                <!-- Experience -->
+                <h3>Experience</h3>
+                <div id="experienceSection"></div>
+                <button type="button" onclick="addSection('experience')">Add Experience</button>
+
+                <!-- Projects -->
+                <h3>Projects</h3>
+                <div id="projectSection"></div>
+                <button type="button" onclick="addSection('project')">Add Project</button>
+
+                <!-- Skills -->
+                <h3>Technical Skills</h3>
+                <textarea id="skills" placeholder="e.g., Python, Java, HTML/CSS"></textarea>
+
+                <!-- Leadership -->
+                <h3>Leadership / Extracurricular</h3>
+                <div id="leadershipSection"></div>
+                <button type="button" onclick="addSection('leadership')">Add Leadership</button>
+
+                <div class="actions">
+                    <button type="button" onclick="clearForm()">Clear</button>
+                    <button type="button" onclick="downloadPDF()">Download PDF</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="preview-section">
+            <div id="resumePreview"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="pdf-export.js"></script>
+</body>
+
+</html>

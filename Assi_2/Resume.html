@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+
+        form,
+        .preview {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        textarea,
+        button,
+        select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .preview {
+            transition: all 0.5s ease-in-out;
+        }
+
+        .resume-section {
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 2px;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: #4caf50;
+            width: 0;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Interactive Resume Builder</h1>
+        <div class="progress-bar" id="progressBar"></div>
+    </header>
+
+    <div class="container">
+        <form id="resumeForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+            <textarea id="summary" placeholder="Profile Summary"></textarea>
+
+            <h3>Education</h3>
+            <div id="educationSection"></div>
+            <button type="button" onclick="addEducation()">Add Education</button>
+
+            <h3>Skills</h3>
+            <input type="text" id="skills" placeholder="Enter skills separated by commas">
+
+            <h3>Experience</h3>
+            <div id="experienceSection"></div>
+            <button type="button" onclick="addExperience()">Add Experience</button>
+
+            <button type="button" onclick="clearForm()">Clear Form</button>
+            <button type="button" onclick="downloadPDF()">Download as PDF</button>
+        </form>
+
+        <div class="preview" id="resumePreview">
+            <div class="resume-section" id="previewName"></div>
+            <div class="resume-section" id="previewEmail"></div>
+            <div class="resume-section" id="previewPhone"></div>
+            <div class="resume-section" id="previewSummary"></div>
+            <div class="resume-section" id="previewEducation"></div>
+            <div class="resume-section" id="previewSkills"></div>
+            <div class="resume-section" id="previewExperience"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("resumeForm").addEventListener("input", updatePreview);
+
+        function updatePreview() {
+            document.getElementById("previewName").textContent = document.getElementById("name").value;
+            document.getElementById("previewEmail").textContent = document.getElementById("email").value;
+            document.getElementById("previewPhone").textContent = document.getElementById("phone").value;
+            document.getElementById("previewSummary").textContent = document.getElementById("summary").value;
+
+            const skills = document.getElementById("skills").value.split(",");
+            document.getElementById("previewSkills").innerHTML = skills.map(s => `<span class="tag">${s.trim()}</span>`).join(" ");
+
+            const edus = document.querySelectorAll(".edu-input");
+            const eduPreview = Array.from(edus).map(input => `<p>${input.value}</p>`).join("");
+            document.getElementById("previewEducation").innerHTML = eduPreview;
+
+            const exps = document.querySelectorAll(".exp-input");
+            const expPreview = Array.from(exps).map(input => `<p>${input.value}</p>`).join("");
+            document.getElementById("previewExperience").innerHTML = expPreview;
+
+            updateProgressBar();
+        }
+
+        function addEducation() {
+            const input = document.createElement("input");
+            input.classList.add("edu-input");
+            input.placeholder = "Education Detail";
+            input.oninput = updatePreview;
+            document.getElementById("educationSection").appendChild(input);
+        }
+
+        function addExperience() {
+            const input = document.createElement("input");
+            input.classList.add("exp-input");
+            input.placeholder = "Experience Detail";
+            input.oninput = updatePreview;
+            document.getElementById("experienceSection").appendChild(input);
+        }
+
+        function clearForm() {
+            document.getElementById("resumeForm").reset();
+            document.getElementById("educationSection").innerHTML = "";
+            document.getElementById("experienceSection").innerHTML = "";
+            document.getElementById("resumePreview").querySelectorAll(".resume-section").forEach(el => el.innerHTML = "");
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const fields = document.querySelectorAll("#resumeForm input, #resumeForm textarea");
+            let filled = 0;
+            fields.forEach(field => { if (field.value.trim()) filled++; });
+            const percent = (filled / fields.length) * 100;
+            document.getElementById("progressBar").style.width = `${percent}%`;
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById("resumePreview");
+            html2pdf().from(element).save("resume.pdf");
+        }
+
+        window.onload = () => {
+            addEducation();
+            addExperience();
+        };
+    </script>
+</body>
+
+</html>
